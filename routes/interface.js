@@ -7,7 +7,20 @@ var bcrypt = require('bcrypt');
 const salt = '$2a$10$ORFLdFF6NLIDfZ3x2ywwfu'
 
 router.post('/login', function (req, res, next) {
-
+  if (req.session.uid != null) return backFail(res, 400, -1, '已经登录。若需切换帐户，请先登出当前用户。')
+  if (checkArg(req, res, ['password', 'username'])) return backFail(res, 400, -1, '有必填项未填写')
+  sync(function* (api){
+    var post = req.body
+    var password = post.password
+    var username = post.username
+    var dbdata = yield DB.read('SELECT * FROM account WHERE username = "'+ username+'"', api.next)
+    if (api.err) console.log(api.err)
+    if (dbdata.length == 0) return backFail(res, 400, -1, '用户名不存在。')
+    password = yield bcrypt.hash(password, salt, api.next);
+    if(password != dbdata[0].password) return backFail(res, 400, -1, '帐户密码不正确。')
+    req.session.uid = dbdata[0].id
+    backSuccess(res)
+  })
 })
 router.post('/signup', function (req, res, next) {
   if (checkArg(req, res, ['email', 'password', 'username'])) return backFail(res, 400, -1, '有必填项未填写')
@@ -21,11 +34,13 @@ router.post('/signup', function (req, res, next) {
     var dbdata = yield DB.read('SELECT * FROM account WHERE email = "'+ email+'"', api.next)
     if (api.err) console.log(api.err)
     if(dbdata.length != 0) return backFail(res, 400, -1, '邮箱已被注册。')
-    bcrypt.hash(password, salt, function(err, hash) {
-      console.log(hash)
-    });
+    var dbdata = yield DB.read('SELECT * FROM account WHERE username = "'+ username+'"', api.next)
+    if (api.err) console.log(api.err)
+    if(dbdata.length != 0) return backFail(res, 400, -1, '用户名已被注册。')
+    password = yield bcrypt.hash(password, salt, api.next);
+    yield DB.write('INSERT INTO account (username, email, password, type) VALUES ("'+username+'", "'+email+'", "'+password+'", 0)', api.next)
+    backSuccess(res)
   })
-  backSuccess(res)
 })
 
 module.exports = router
