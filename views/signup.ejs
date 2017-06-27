@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class='home-body'>
+  <head>
+    <title>注册新帐户</title>
+    <% include templates/head %>
+  </head>
+
+    <body>
+      <div class='container module_signup'>
+        <div class='col-md-6 col-md-offset-3'>
+          <h1>注册新帐户<br><small>使用系统完整功能，享受更多服务。</small></h1>
+          <div class="form-group">
+            <label for="form_username" class='sr-only'>用户名</label>
+            <input type="text" class="form-control" id="form_username" placeholder="用户名" v-model='signupInfo.username'>
+          </div>
+          <div class="form-group">
+            <label for="form_email" class='sr-only'>电邮地址</label>
+            <input type="email" class="form-control" id="form_email" placeholder="电邮地址" v-model='signupInfo.email'>
+          </div>
+          <div class="form-group">
+            <label for="form_password" class='sr-only'>帐户密码</label>
+            <input type="password" class="form-control" id="form_password" placeholder="帐户密码" v-model='signupInfo.password'>
+          </div>
+          <div class="form-group">
+            <label for="form_confirmPassword" class='sr-only'>确认密码</label>
+            <input type="password" class="form-control" id="form_confirmPassword" placeholder="重复输入上述密码，以确认输入正确" v-model='signupInfo.confirmPassword'>
+          </div>
+          <div><button class="btn btn-primary" v-on:click='submitForSignup()'>注册</button></div>
+        </div>
+      </div>
+      <% include templates/modal %>
+    </body>
+    <% include templates/js %>
+</html>

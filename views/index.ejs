@@ -6,7 +6,24 @@
   </head>
 
     <body>
-      
+      <div class='container module_login'>
+        <div class='col-md-6 col-md-offset-3'>
+          <h1>欢迎使用<br><small>登录以进入系统，使用系统的完整功能。</small></h1>
+          <div class="form-group">
+            <label for="form_username" class='sr-only'>用户名</label>
+            <input type="text" class="form-control" id="form_username" placeholder="用户名" v-model='loginInfo.username'>
+          </div>
+          <div class="form-group">
+            <label for="form_password" class='sr-only'>帐户密码</label>
+            <input type="password" class="form-control" id="form_password" placeholder="帐户密码" v-model='loginInfo.password'>
+          </div>
+          <div><button class="btn btn-primary" v-on:click='submitLoginInfo()'>登录</button></div>
+          <div class='login_helparea'>
+          <div><label>还没有注册帐户？</label></div>
+          <div>现在就去 <a href='/signup'>注册一个</a> 吧</div>
+        </div>
+        </div>
+      </div>
       <% include templates/modal %>
     </body>
     <% include templates/js %>

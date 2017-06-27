@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class='home-body'>
+  <head>
+    <title>我的资料</title>
+    <% include templates/head %>
+  </head>
+
+    <body>
+      <div class='container'>
+        <div class='module_userinfo row'>
+          <% include templates/userinfobar %>
+        </div>
+        <div class='row'>
+          <% include templates/sidebarnav %>
+        </div>
+        <div class='row main'>
+          <div class='col-md-6'>
+            <h2>我的资料<br><small>查看、修改你的个人资料。</small></h2>
+          </div>
+          <div class='col-md-6 module_infoModifier'>
+            <div class="form-group">
+              <label for="form_username">用户名</label>
+              <input type="text" class="form-control" id="form_username" v-model='profile.username' placeholder="你的用户名">
+            </div>
+            <div class="form-group">
+              <label for="form_email">电邮地址</label>
+              <input type="email" class="form-control" id="form_email" v-model='profile.email' placeholder="你的电邮地址">
+            </div>
+            <div class="form-group">
+              <label for="form_bio">个人介绍</label>
+              <textarea class="form-control" rows="3" id="form_bio" v-model='profile.bio' placeholder="简单介绍你自己"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="form_password">新密码</label>
+              <input type="password" class="form-control" id="form_email" v-model='password' placeholder="如果不需要修改密码，请留空此处。">
+            </div>
+            <div class="form-group" v-if='password != ""'>
+              <label for="form_confirmPassword">确认新密码</label>
+              <input type="password" class="form-control" id="form_confirmPassword" v-model='confirmPassword' placeholder="请确认一次上面输入的密码">
+            </div>
+            <button class='btn btn-primary' v-on:click='submitNewProfile()'>修改资料</button>
+          </div>
+        </div>
+      </div>
+      <% include templates/modal %>
+    </body>
+    <% include templates/js %>
+    <script>loadUserInfo()
+    nav.$data.now = "home"</script>
+</html>

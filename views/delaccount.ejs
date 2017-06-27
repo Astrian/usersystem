@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class='home-body'>
+  <head>
+    <title>删除帐户</title>
+    <% include templates/head %>
+  </head>
+
+    <body>
+      <div class='container'>
+        <div class='module_userinfo row'>
+          <% include templates/userinfobar %>
+        </div>
+        <div class='row'>
+          <% include templates/sidebarnav %>
+        </div>
+        <div class='row main'>
+          <div class='col-md-6'>
+            <h2>删除帐户<br><small>将您的帐户彻底地从系统中删除。</small></h2>
+          </div>
+          <div class='col-md-6 module_delAccount'>
+            <button class='btn btn-danger btn-lg' v-on:click="delaccountOps()">删除我的帐户</button>
+            <h3>敬请注意！</h3>
+            <p>您有权删除您的帐户，但敬请确保已知此操作所带来的风险后确认操作。</p>
+            <p>删除帐户后，您将：</p>
+            <ul>
+              <li>无法继续访问您的当前帐户</li>
+              <li>无法继续使用该系统</li>
+              <li>帐户中的数据将立即从数据库中清除，且所有人（包括你和系统）都无法找回</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <% include templates/modal %>
+    </body>
+    <% include templates/js %>
+    <script>loadUserInfo()
+    nav.$data.now = "delaccount"</script>
+</html>

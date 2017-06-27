@@ -13,7 +13,7 @@ router.post('/login', function (req, res, next) {
   sync(function* (api){
     var post = req.body
     var password = post.password
-    var username = post.username
+    var username = (post.username).toLowerCase()
     var dbdata = yield DB.read('SELECT * FROM account WHERE username = "'+ username+'"', api.next)
     if (api.err) console.log(api.err)
     if (dbdata.length == 0) return backFail(res, 400, -1, '用户名不存在。')
@@ -30,9 +30,9 @@ router.post('/signup', function (req, res, next) {
   if (checkArg(req, res, ['email', 'password', 'username'])) return backFail(res, 400, -1, '有必填项未填写')
   sync(function* (api) {
     var post = req.body
-    var email = post.email
+    var email = (post.email).toLowerCase()
     var password = post.password
-    var username = post.username
+    var username = (post.username).toLowerCase()
     if (email.indexOf('@') == -1) return backFail(res, 400, -1, '邮箱格式不正确。')
     console.log('SELECT * FROM account WHERE email = "'+ email+'"')
     var dbdata = yield DB.read('SELECT * FROM account WHERE email = "'+ email+'"', api.next)
@@ -83,13 +83,14 @@ router.delete('/delmyaccount', function (req, res, next) {
 })
 
 // （管理员）删除某个用户的帐户
-router.delete('/delspecificaccount', function(req, res, next){
+router.delete('/delspecificaccount', function (req, res, next) {
   if (req.session.uid == null) return backFail(res, 400, -1, '尚未登录至系统。')
-  if (checkArg(req, res, ['username'])) return backFail(res, 400, -1, '有必填项未填写')
+  backSuccess(res)
+  //if (checkArg(req, res, ['username'])) return backFail(res, 400, -1, '有必填项未填写')
   sync(function* (api){
     var dbResult = yield DB.read('SELECT type FROM account WHERE id = '+req.session.uid, api.next)
     if(dbResult[0].type != 1) return backFail(res, 400, -1, '当前登录用户不是管理员。')
-    dbResult = yield DB.read('SELECT id FROM account WHERE username = "'+req.body.username+'"', api.next)
+    dbResult = yield DB.read('SELECT id FROM account WHERE username = "'+(req.query.username).toLowerCase()+'"', api.next)
     if(dbResult.length == 0) return backFail(res, 400, -1, '用户名不存在。')
     yield DB.write('DELETE FROM account WHERE id = '+dbResult[0].id, api.next)
     backSuccess(res)

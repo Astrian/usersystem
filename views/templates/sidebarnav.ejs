@@ -1,0 +1,7 @@
+
+<ul class="nav nav-tabs module_nav">
+  <li role="presentation" v-bind:class="{ active: now == 'home' }"><a href="/home">我的资料</a></li>
+  <li role="presentation" v-bind:class="{ active: now == 'delaccount' }"><a href="/delaccount">删除帐户</a></li>
+  <li role="presentation" v-bind:class="{ active: now == 'console' }" v-if='showConsole'><a href="/console">管理员控制台</a></li>
+  <li role="presentation"><a href="/logout">退出登录</a></li>
+</ul>
